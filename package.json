@@ -1,0 +1,41 @@
+{
+  "name": "setup-haxe",
+  "version": "2.1.0",
+  "description": "setup haxe action",
+  "author": "Sho Kuroda <krdlab@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "main": "lib/main.js",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "tsc",
+    "pack": "ncc build && ncc build -o dist/cache-save src/cache-save.ts",
+    "test": "biome check && vitest run",
+    "format": "biome check --write",
+    "dist": "npm run build && npm run pack"
+  },
+  "keywords": [
+    "actions",
+    "haxe",
+    "setup"
+  ],
+  "dependencies": {
+    "@actions/cache": "^6.0.0",
+    "@actions/core": "^1.9.1",
+    "@actions/exec": "^1.0.3",
+    "@actions/glob": "^0.4.0",
+    "@actions/tool-cache": "^4.0.0",
+    "semver": "^7.5.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14",
+    "@types/node": "^24.1.0",
+    "@types/semver": "^7.1.0",
+    "@vercel/ncc": "^0.36.1",
+    "typescript": "^4",
+    "vitest": "^4.1.5"
+  }
+}

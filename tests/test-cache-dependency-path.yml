@@ -1,0 +1,34 @@
+name: Test Haxe setup with cache-dependency-path
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create a dependency file for caching
+        run: |
+          mkdir -p /tmp/haxe-project
+          echo '{}' > /tmp/haxe-project/haxelib.json
+      - id: setup-haxe
+        uses: .
+        with:
+          haxe-version: '4.3.7'
+          cache-dependency-path: '/tmp/haxe-project/haxelib.json'
+      - name: Assert haxe is available
+        run: |
+          echo "Checking haxe binary..."
+          if ! command -v haxe &>/dev/null; then
+            echo "FAIL: haxe command not found in PATH"
+            exit 1
+          fi
+          echo "PASS: haxe found at $(command -v haxe)"
+      - name: Assert haxe version matches
+        run: |
+          VERSION=$(haxe --version 2>&1 | head -1)
+          echo "actual version: $VERSION"
+          if [[ "$VERSION" != *"4.3.7"* ]]; then
+            echo "FAIL: expected version 4.3.7, got: $VERSION"
+            exit 1
+          fi
+          echo "PASS"
