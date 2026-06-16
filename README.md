@@ -11,6 +11,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v1.5.1 | [`v1.5.1`](https://github.com/chainguard-actions/krdlab-setup-haxe/tree/v1.5.1) | [`3437f1a`](https://github.com/krdlab/setup-haxe/commit/3437f1adfca98b22815d926271cc39faaf996f25) |
 | v2.0.1 | [`v2.0.1`](https://github.com/chainguard-actions/krdlab-setup-haxe/tree/v2.0.1) | [`5fb7928`](https://github.com/krdlab/setup-haxe/commit/5fb7928c6e11762939595c3ac45ab53021b17d8b) |
 | v2.0.2 | [`v2.0.2`](https://github.com/chainguard-actions/krdlab-setup-haxe/tree/v2.0.2) | [`23a78f7`](https://github.com/krdlab/setup-haxe/commit/23a78f711bc4a623db38eac90d351ff0027f0116) |
+| v2.1.0 | [`v2.1.0`](https://github.com/chainguard-actions/krdlab-setup-haxe/tree/v2.1.0) | [`d936675`](https://github.com/krdlab/setup-haxe/commit/d93667502be3b4f31a94a3308a74388f2e178a8d) |
 
 ## Privacy
 
