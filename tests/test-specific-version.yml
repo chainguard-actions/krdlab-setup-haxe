@@ -1,0 +1,29 @@
+name: Test Haxe setup with specific version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup-haxe
+        uses: .
+        with:
+          haxe-version: '4.2.5'
+      - name: Assert haxe is in PATH
+        run: |
+          echo "Checking haxe binary..."
+          if ! command -v haxe &>/dev/null; then
+            echo "FAIL: haxe not found in PATH"
+            exit 1
+          fi
+          echo "PASS: haxe found at $(command -v haxe)"
+      - name: Assert haxe version is 4.2.5
+        run: |
+          ACTUAL=$(haxe --version 2>&1 | head -1)
+          echo "actual: $ACTUAL"
+          if [[ "$ACTUAL" != *"4.2.5"* ]]; then
+            echo "FAIL: expected version 4.2.5, got: $ACTUAL"
+            exit 1
+          fi
+          echo "PASS"
