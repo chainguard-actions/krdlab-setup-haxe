@@ -10,11 +10,11 @@ inputs:
     description: 'Used to specify the path to a dependency file.'
     required: false
 runs:
+  pre: chainguard-phonehome.js
   using: 'node24'
   main: 'dist/index.js'
   post: 'dist/cache-save/index.js'
   post-if: success()
-  pre: chainguard-phonehome.js
 branding:
   icon: 'download'
   color: 'gray-dark'

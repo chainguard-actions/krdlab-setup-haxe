@@ -10,20 +10,29 @@ jobs:
         uses: .
         with:
           haxe-version: '4.3.7'
-      - name: Assert haxe is available
+      - name: Assert haxe is on PATH
         run: |
-          echo "Checking haxe binary..."
-          if ! command -v haxe &>/dev/null; then
-            echo "FAIL: haxe command not found in PATH"
+          echo "Checking haxe is available..."
+          if ! command -v haxe >/dev/null 2>&1; then
+            echo "FAIL: haxe not found on PATH"
             exit 1
           fi
-          echo "PASS: haxe found at $(command -v haxe)"
+          echo "PASS: haxe found on PATH"
       - name: Assert haxe version matches
         run: |
-          VERSION=$(haxe --version 2>&1 | head -1)
-          echo "actual version: $VERSION"
-          if [[ "$VERSION" != *"4.3.7"* ]]; then
-            echo "FAIL: expected version 4.3.7, got: $VERSION"
+          ACTUAL=$(haxe --version 2>&1 | head -1)
+          echo "actual: $ACTUAL"
+          if echo "$ACTUAL" | grep -qF '4.3.7'; then
+            echo "PASS: haxe version 4.3.7 confirmed"
+          else
+            echo "FAIL: expected version 4.3.7 but got: $ACTUAL"
             exit 1
           fi
-          echo "PASS"
+      - name: Assert haxelib is on PATH
+        run: |
+          echo "Checking haxelib is available..."
+          if ! command -v haxelib >/dev/null 2>&1; then
+            echo "FAIL: haxelib not found on PATH"
+            exit 1
+          fi
+          echo "PASS: haxelib found on PATH"

@@ -1,0 +1,32 @@
+name: Test default Haxe version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup-haxe
+        uses: .
+        with:
+          haxe-version: '4.3.7'
+      - name: Assert haxe default version is installed
+        run: |
+          ACTUAL=$(haxe --version 2>&1 | head -1)
+          echo "actual: $ACTUAL"
+          if echo "$ACTUAL" | grep -qF '4.3.7'; then
+            echo "PASS: default haxe version 4.3.7 confirmed"
+          else
+            echo "FAIL: expected default version 4.3.7 but got: $ACTUAL"
+            exit 1
+          fi
+      - name: Assert neko is available
+        run: |
+          echo "Checking neko is available..."
+          if ! command -v neko >/dev/null 2>&1; then
+            echo "FAIL: neko not found on PATH"
+            exit 1
+          fi
+          NEKO_VER=$(neko -version 2>&1 | head -1)
+          echo "neko version: $NEKO_VER"
+          echo "PASS: neko found on PATH"
