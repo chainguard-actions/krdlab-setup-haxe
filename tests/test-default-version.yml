@@ -1,0 +1,25 @@
+name: Test default Haxe version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup-haxe
+        uses: .
+        # No haxe-version specified — should use default 4.3.7
+      - name: Assert haxe is on PATH with default version
+        run: |
+          echo "Checking haxe is available with default version..."
+          if ! command -v haxe >/dev/null 2>&1; then
+            echo "FAIL: haxe not found on PATH"
+            exit 1
+          fi
+          ACTUAL_VERSION=$(haxe --version 2>&1 | head -1)
+          echo "actual version: $ACTUAL_VERSION"
+          if ! echo "$ACTUAL_VERSION" | grep -q "4.3.7"; then
+            echo "FAIL: expected default version 4.3.7 but got: $ACTUAL_VERSION"
+            exit 1
+          fi
+          echo "PASS: default haxe version 4.3.7 is installed"
