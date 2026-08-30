@@ -1,0 +1,35 @@
+name: Test Haxe setup with cache dependency path
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create a dependency file for caching
+        run: |
+          mkdir -p tests/fixtures
+          echo '{"dependencies": {"hxnodejs": "12.1.0"}}' > tests/fixtures/haxe.json
+          echo "Created dependency file at tests/fixtures/haxe.json"
+      - id: setup-haxe
+        uses: .
+        with:
+          haxe-version: '4.3.7'
+          cache-dependency-path: 'tests/fixtures/haxe.json'
+      - name: Assert haxe is on PATH
+        run: |
+          echo "Checking haxe is available..."
+          if ! command -v haxe >/dev/null 2>&1; then
+            echo "FAIL: haxe not found on PATH"
+            exit 1
+          fi
+          echo "PASS: haxe found on PATH"
+      - name: Assert haxe version matches
+        run: |
+          ACTUAL_VERSION=$(haxe --version 2>&1 | head -1)
+          echo "actual version: $ACTUAL_VERSION"
+          if ! echo "$ACTUAL_VERSION" | grep -q "4.3.7"; then
+            echo "FAIL: expected version 4.3.7 but got: $ACTUAL_VERSION"
+            exit 1
+          fi
+          echo "PASS: haxe version is 4.3.7 with cache-dependency-path set"

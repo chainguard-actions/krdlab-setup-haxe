@@ -1,0 +1,37 @@
+name: Test basic Haxe setup
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup-haxe
+        uses: .
+        with:
+          haxe-version: '4.3.7'
+      - name: Assert haxe is on PATH
+        run: |
+          echo "Checking haxe is available..."
+          if ! command -v haxe >/dev/null 2>&1; then
+            echo "FAIL: haxe not found on PATH"
+            exit 1
+          fi
+          echo "PASS: haxe found on PATH"
+      - name: Assert haxe version matches
+        run: |
+          ACTUAL_VERSION=$(haxe --version 2>&1 | head -1)
+          echo "actual version: $ACTUAL_VERSION"
+          if ! echo "$ACTUAL_VERSION" | grep -q "4.3.7"; then
+            echo "FAIL: expected version 4.3.7 but got: $ACTUAL_VERSION"
+            exit 1
+          fi
+          echo "PASS: haxe version is 4.3.7"
+      - name: Assert haxelib is on PATH
+        run: |
+          echo "Checking haxelib is available..."
+          if ! command -v haxelib >/dev/null 2>&1; then
+            echo "FAIL: haxelib not found on PATH"
+            exit 1
+          fi
+          echo "PASS: haxelib found on PATH"

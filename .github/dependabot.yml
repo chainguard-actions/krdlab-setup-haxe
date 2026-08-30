@@ -1,0 +1,22 @@
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+    # NOTE: dependabot treats each codeql-action sub-action (init, analyze, ...) as
+    # its own dependency, but codeql-action fails a job whose steps are not all on
+    # the same version. Grouping them keeps one PR bumping every reference at once.
+    groups:
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
+    labels:
+      - dependencies
